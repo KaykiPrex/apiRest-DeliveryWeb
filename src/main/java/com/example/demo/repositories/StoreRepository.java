@@ -17,4 +17,6 @@ public interface StoreRepository extends CrudRepository<StoreModel, Long> {
 	public ArrayList<StoreModel> findByProducts_idProduct(long id);
 
 	public ArrayList<StoreModel> findByProducts_name(String name);
+	
+	public ArrayList<StoreModel> findDistinctByProducts_name(String name);
 }

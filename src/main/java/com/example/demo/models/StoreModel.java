@@ -38,5 +38,10 @@ public class StoreModel {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	@Getter @Setter private Set<ProductModel> products = new HashSet<>();
+	
+	/*
+	 * public void addProduct(ProductModel productModel) {
+	 * products.add(productModel); productModel.setStore(this); }
+	 */
 
 }

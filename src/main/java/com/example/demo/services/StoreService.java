@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.models.ProductModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.repositories.StoreRepository;
@@ -35,8 +37,14 @@ public class StoreService {
 	    public ArrayList<StoreModel>  obtenerProductosPorStore(long id) {
 	        return storeRepository.findByProducts_idProduct(id);
 	    }
-
+	    //Distintos
 	    public ArrayList<StoreModel>  obtenerPorNombreProducto(String name) {
-	        return storeRepository.findByProducts_name(name);
+	        return storeRepository.findDistinctByProducts_name(name);
+	    }
+	    @Transactional
+	    public StoreModel addProducts(StoreModel store, ProductModel product) {
+	    	//store.getProducts().add(product); cambiar a MODIFICAR STORE()
+	    	store.setAddress("FAFAF");
+	    	return storeRepository.save(store);
 	    }
 }

@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.models.ProductModel;
+import com.example.demo.models.StoreModel;
 import com.example.demo.repositories.ProductRepository;
 
 @Service
@@ -28,6 +30,11 @@ public class ProductService {
 
 	    public ArrayList<ProductModel> obtenerPorName(String name){
 	    	return productRepository.findByName(name);
+	    }
+	    @Transactional
+	    public ProductModel addProduct(StoreModel store, ProductModel product) {
+	    	product.setStore(store); 
+	    	return productRepository.save(product);
 	    }
 
 }

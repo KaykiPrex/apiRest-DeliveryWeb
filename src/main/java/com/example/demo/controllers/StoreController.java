@@ -2,19 +2,24 @@ package com.example.demo.controllers;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.models.ProductModel;
 import com.example.demo.models.StoreModel;
+import com.example.demo.services.ProductService;
 import com.example.demo.services.StoreService;
 
 
@@ -25,6 +30,8 @@ import com.example.demo.services.StoreService;
 public class StoreController {
 	@Autowired
     StoreService storeService;
+	@Autowired
+	ProductService productService;
 
     @GetMapping()
     public ArrayList<StoreModel> obtenerStores(){
@@ -54,6 +61,37 @@ public class StoreController {
     @PostMapping(path = "/save")
     public StoreModel createStore(@RequestBody StoreModel store) {
         return storeService.guardarStore(store);
+    }
+    
+	/*
+	 * @PutMapping(path = "/{storeID}") public StoreModel
+	 * createProductforStore(@PathVariable String storeID ,@RequestBody ProductModel
+	 * product) { Optional<StoreModel> store =
+	 * storeService.obtenerPorId(Long.parseLong(storeID)); Set<ProductModel> p =
+	 * store.get().getProducts(); p.add(product); store.get().setProducts(p); return
+	 * storeService.guardarStore(store.get());
+	 * 
+	 * }
+	 */
+	/*
+	 * @PutMapping(path = "/{storeID}") public StoreModel
+	 * createProductforStore(@PathVariable String storeID ,@RequestBody ProductModel
+	 * product) { StoreModel store =
+	 * storeService.obtenerPorId(Long.parseLong(storeID)).orElse(null);
+	 * Set<ProductModel> p = store.getProducts(); p.add(product);
+	 * store.setProducts(p); System.out.println(storeID);
+	 * System.out.println(store.getIdStore()); System.out.println(store.getName());
+	 * return storeService.guardarStore(store);
+	 * 
+	 * }
+	 */
+    @Transactional
+    @PutMapping(path = "/{storeID}") 
+    public ProductModel createProductforStore(@PathVariable String storeID ,@RequestBody ProductModel product) {
+    	StoreModel store = storeService.obtenerPorId(Long.parseLong(storeID)).orElse(null);
+    
+    	return productService.addProduct(store, product);
+    	
     }
 
 }

@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "producto")
 public class ProductModel {
@@ -21,6 +23,7 @@ public class ProductModel {
 	private String description;
 	private double price;
 	private String pic;
+	@JsonIgnore
 	@ManyToOne
     @JoinColumn(name = "FK_STORE", nullable = false, updatable = false)
 	private StoreModel store;
@@ -75,4 +78,14 @@ public class ProductModel {
 		this.pic = pic;
 	}
 
+	public StoreModel getStore() {
+		return store;
+	}
+
+	public void setStore(StoreModel store) {
+		this.store = store;
+	}
+	
+	
+	
 }
